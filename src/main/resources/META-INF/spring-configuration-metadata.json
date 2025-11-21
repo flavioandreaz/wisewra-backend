@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "clerk.webhook.secret",
+      "type": "java.lang.String",
+      "description": "Secret key for validating Clerk webhook signatures. This should match the webhook secret configured in your Clerk Dashboard.",
+      "defaultValue": "",
+      "sourceType": "com.wisevra.config.ClerkProperties"
+    }
+  ],
+  "groups": [
+    {
+      "name": "clerk",
+      "type": "com.wisevra.config.ClerkProperties",
+      "description": "Configuration properties for Clerk authentication service integration."
+    },
+    {
+      "name": "clerk.webhook",
+      "type": "com.wisevra.config.ClerkProperties$Webhook",
+      "description": "Webhook configuration for Clerk user events (created, updated, deleted).",
+      "sourceType": "com.wisevra.config.ClerkProperties"
+    }
+  ],
+  "hints": [
+    {
+      "name": "clerk.webhook.secret",
+      "values": [
+        {
+          "value": "",
+          "description": "No secret configured - webhooks will not be validated (development only)"
+        },
+        {
+          "value": "whsec_",
+          "description": "Clerk webhook secret format (starts with 'whsec_')"
+        }
+      ]
+    }
+  ]
+}

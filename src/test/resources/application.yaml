@@ -1,0 +1,45 @@
+# Test configuration for Spring Boot
+# Configuração específica para testes
+
+spring:
+  application:
+    name: wisevra-app-test
+    
+  # R2DBC Configuration - usar PostgreSQL para testes (mesma configuração que produção)
+  r2dbc:
+    url: r2dbc:postgresql://ep-nameless-mountain-ahahq1ak-pooler.c-3.us-east-1.aws.neon.tech:5432/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_WqRuNmy1B9GK
+    pool:
+      initial-size: 2
+      max-size: 5
+      max-idle-time: 10m
+      validation-query: SELECT 1
+    
+  # SQL Initialization para testes
+  sql:
+    init:
+      mode: always
+      
+# Server Configuration para testes
+server:
+  port: 0  # Random port para testes
+
+# Logging Configuration
+logging:
+  level:
+    "[com.wisevra]": DEBUG
+    "[reactor.test]": DEBUG
+
+# Management & Monitoring (Spring Boot Actuator)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# Test environment specific configurations
+# CORS será configurado via @CrossOrigin nos controllers

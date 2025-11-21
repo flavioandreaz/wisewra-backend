@@ -1,0 +1,9 @@
+grafana rodando na porta 30000
+http://localhost:30000
+Login padrão:
+Usuário: admin
+Senha: admin
+
+arquivo prometheus em C:\Ambiente_Java\prometheus.yml
+
+http://localhost:9090/query
