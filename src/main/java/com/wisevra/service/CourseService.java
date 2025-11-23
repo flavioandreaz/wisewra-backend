@@ -39,7 +39,6 @@ public class CourseService {
         );
     }
 
-
     public Flux<CourseResponse> getAllCourses() {
         return enrichCoursesWithCollections(courseRepository.findAll());
     }
@@ -66,5 +65,15 @@ public class CourseService {
    
     public Course toEntity(CourseDTO dto) {
         return courseMapper.toEntity(dto);
+    }
+
+    public Flux<CourseResponse> getCourseBySlug(String slug) {
+        Flux<Course> courses = courseRepository.findAll().filter(course -> slug.equals(course.getSlug()));
+        return enrichCoursesWithCollections(courses);
+    }
+
+    public Flux<CourseResponse> getCourseById(String id) {
+        Flux<Course> courses = courseRepository.findById(id).flux();
+        return enrichCoursesWithCollections(courses);
     }
 }
