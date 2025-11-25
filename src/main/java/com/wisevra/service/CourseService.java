@@ -3,6 +3,7 @@ package com.wisevra.service;
 import com.wisevra.repository.CourseRepository;
 import com.wisevra.repository.ModuleRepository;
 import com.wisevra.repository.TagRepository;
+import com.wisevra.repository.LessonRepository;
 import com.wisevra.response.CourseResponse;
 import com.wisevra.domain.Course;
 import com.wisevra.dto.CourseDTO;
@@ -22,13 +23,20 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final ModuleRepository moduleRepository;
     private final TagRepository tagRepository;
+    private final LessonRepository lessonRepository;
     private final CourseMapper courseMapper;
 
 
     public Flux<CourseResponse> enrichCoursesWithCollections(Flux<Course> courses) {
         return courses.flatMap(course ->
             Mono.zip(
-                moduleRepository.findByCourseId(course.getId()).collectList(),
+                moduleRepository.findByCourseId(course.getId())
+                    .flatMap(module -> lessonRepository.findByModuleId(module.getId()).collectList()
+                        .map(lessons -> {
+                            module.setLessons(lessons);
+                            return module;
+                        })
+                    ).collectList(),
                 tagRepository.findTagsByCourseId(course.getId()).collectList(),
                 (modules, tags) -> {
                     course.setModules(modules);

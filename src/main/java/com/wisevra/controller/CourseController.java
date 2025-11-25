@@ -27,7 +27,10 @@ public class CourseController {
 
     @GetMapping("/{slug}")
     public Mono<CourseResponse> getCourseBySlug(@PathVariable String slug) {
-        return courseService.getCourseBySlug(slug).next();
+        return courseService.getCourseBySlug(slug)
+        .next()
+        .doOnNext(course -> System.out.println("Retornando: " + course));
+
     }
 
     @GetMapping("/id/{id}")
